@@ -12,4 +12,5 @@ cp -r build/* ../backend/src/main/resources/static/
 echo "=== 构建并启动后端应用 ==="
 cd ../backend
 chmod +x gradlew
-./gradlew clean build bootRun 
+./gradlew clean build bootJar
+java -jar build/libs/backend-0.0.1-SNAPSHOT.jar
