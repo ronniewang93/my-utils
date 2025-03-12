@@ -31,6 +31,11 @@
     font-weight: bold;
     color: #343a40;
     margin-bottom: 10px;
+    cursor: text;
+}
+
+.time:hover {
+    color: #007bff;
 }
 
 .status {
@@ -74,4 +79,28 @@
 .sound-button .material-icons {
     font-size: 24px;
     color: #6c757d;
+}
+
+.time-input {
+    font-size: 48px;
+    font-weight: bold;
+    width: 120px;
+    text-align: center;
+    border: none;
+    background: transparent;
+    color: #343a40;
+    outline: none;
+    padding: 0;
+    margin-bottom: 5px;
+}
+
+.time-input:focus {
+    color: #007bff;
+}
+
+.time-input-label {
+    font-size: 18px;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 } 
