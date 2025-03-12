@@ -1,16 +1,16 @@
 .kanban-board {
-  padding: 24px;
+  padding: 8px;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  background-color: #fafafa;
+  background-color: #fff9e6;
 }
 
 .board-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 .board-header h2 {
@@ -21,39 +21,38 @@
 
 .board-columns {
   display: flex;
-  gap: 24px;
+  gap: 8px;
   overflow-x: auto;
-  padding-bottom: 24px;
+  padding-bottom: 8px;
   min-height: 200px;
 }
 
 .column {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
   min-width: 300px;
-  padding: 16px;
+  padding: 8px;
   cursor: grab;
   transition: all 0.2s ease;
 }
 
 .column:hover {
-  border-color: #e0e0e0;
+  border-color: #4a9eff;
 }
 
 .column.dragging {
   opacity: 0.9;
   cursor: grabbing;
-  background: #f8f8f8;
+  background: #ffffff;
 }
 
 .column-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
 }
 
 .column-title {
@@ -61,72 +60,73 @@
   font-weight: 500;
   padding: 4px 8px;
   border: 1px solid transparent;
-  border-radius: 4px;
+  border-radius: 3px;
   background: transparent;
-  color: #333;
+  color: #2c3e50;
 }
 
 .column-title:hover,
 .column-title:focus {
-  border-color: #eee;
-  background: #fafafa;
+  border-color: #4a9eff;
+  background: #ffffff;
 }
 
 .tasks {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 4px;
 }
 
 .new-task-input-container {
-  margin-bottom: 16px;
+  margin-bottom: 4px;
   width: 100%;
 }
 
 .new-task-input {
   width: calc(100% - 24px);
   padding: 8px 12px;
-  border: 1px solid #eee;
-  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
   font-size: 0.95em;
   transition: all 0.2s ease;
-  background-color: #fafafa;
+  background-color: #ffffff;
 }
 
 .new-task-input:focus {
   outline: none;
-  border-color: #666;
+  border-color: #4a9eff;
   background-color: #fff;
+  box-shadow: none;
 }
 
 .new-task-input::placeholder {
-  color: #999;
+  color: #a0aec0;
   font-size: 0.9em;
 }
 
 .task {
-  background: #fff;
-  border: 1px solid #eee;
-  border-radius: 4px;
-  padding: 12px;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  padding: 6px;
   transition: all 0.2s ease;
 }
 
 .task:hover {
-  border-color: #e0e0e0;
+  border-color: #4a9eff;
 }
 
 .task-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
 }
 
 .task-checkbox {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex: 1;
   cursor: pointer;
 }
@@ -144,39 +144,48 @@
   line-height: 1.4;
   word-break: break-word;
   text-align: left;
-  color: #333;
+  color: #2c3e50;
   font-size: 0.95em;
 }
 
 .task-description.done {
   text-decoration: line-through;
-  color: #999;
+  color: #a0aec0;
 }
 
 .completed-date {
-  color: #999;
+  color: #a0aec0;
   font-size: 0.85em;
-  margin-top: 4px;
+  margin-top: 2px;
 }
 
 .add-column-btn {
-  background: #333;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  background: none;
+  color: #4a9eff;
+  border: 2px dashed #4a9eff;
+  width: 40px;
+  height: 40px;
+  border-radius: 3px;
   cursor: pointer;
-  font-size: 0.9em;
-  transition: background-color 0.2s ease;
+  font-size: 24px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  margin: 0 8px;
+  transition: all 0.2s ease;
 }
 
 .add-column-btn:hover {
-  background: #444;
+  color: #ffffff;
+  border-color: #4a9eff;
+  background: #4a9eff;
 }
 
 .delete-btn {
   background: none;
-  color: #ccc;
+  color: #cbd5e0;
   border: none;
   padding: 4px 8px;
   border-radius: 4px;
@@ -190,5 +199,5 @@
 }
 
 .delete-btn:hover {
-  color: #999;
+  color: #e53e3e;
 } 

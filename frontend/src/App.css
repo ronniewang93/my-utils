@@ -47,6 +47,7 @@ h1 {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: #fff9e6;
 }
 
 .menu-bar {
@@ -87,5 +88,11 @@ h1 {
   align-items: center;
   justify-content: flex-start;
   padding-top: 2rem;
-  background-color: #f5f5f5;
+  background-color: #fff9e6;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #fff9e6;
 }

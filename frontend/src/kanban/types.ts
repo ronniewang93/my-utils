@@ -1,7 +1,9 @@
+export type TaskStatus = 'pending' | 'done';
+
 export interface Task {
   id: string;
   description: string;
-  status: 'pending' | 'done';
+  status: TaskStatus;
   completedDate?: string;
 }
 

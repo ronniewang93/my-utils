@@ -63,7 +63,7 @@ const PomodoroTimer: React.FC = () => {
                 clearInterval(timer);
             }
         };
-    }, [isRunning, isSoundEnabled]);
+    }, [isRunning, isSoundEnabled, timeLeft]);
 
     useEffect(() => {
         if (isEditing && inputRef.current) {
