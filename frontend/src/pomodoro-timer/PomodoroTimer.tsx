@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './PomodoroTimer.css';
-import Modal from './Modal';
+import Modal from '../components/Modal';
 
 const PomodoroTimer: React.FC = () => {
     const INITIAL_TIME = 25 * 60;
@@ -13,7 +13,6 @@ const PomodoroTimer: React.FC = () => {
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const inputRef = useRef<HTMLInputElement>(null);
 
-    // 在组件加载时初始化音频
     useEffect(() => {
         const setupAudio = async () => {
             try {
@@ -39,33 +38,37 @@ const PomodoroTimer: React.FC = () => {
 
     useEffect(() => {
         let timer: NodeJS.Timeout;
-        
+
         if (isRunning && timeLeft > 0) {
             timer = setInterval(() => {
                 setTimeLeft(prevTime => {
+                    if (prevTime <= 1) {
+                        setIsRunning(false);
+                        setShowModal(true);
+                        return 0;
+                    }
                     if (isSoundEnabled && audioRef.current) {
                         audioRef.current.currentTime = 0;
-                        audioRef.current.play().catch(err => {
-                            console.error('Failed to play tick sound:', err);
+                        audioRef.current.play().catch(error => {
+                            console.error('Audio playback failed:', error);
                         });
                     }
                     return prevTime - 1;
                 });
             }, 1000);
-        } else if (timeLeft === 0) {
-            setIsRunning(false);
-            setShowModal(true);
         }
 
         return () => {
-            if (timer) clearInterval(timer);
+            if (timer) {
+                clearInterval(timer);
+            }
         };
-    }, [isRunning, timeLeft, isSoundEnabled]);
+    }, [isRunning, isSoundEnabled]);
 
-    // 当开始编辑时自动聚焦输入框
     useEffect(() => {
         if (isEditing && inputRef.current) {
             inputRef.current.focus();
+            inputRef.current.select();
         }
     }, [isEditing]);
 
@@ -77,8 +80,7 @@ const PomodoroTimer: React.FC = () => {
 
     const resetTimer = (e: React.MouseEvent) => {
         e.stopPropagation();
-        const minutes = parseInt(editMinutes) || 25;
-        setTimeLeft(minutes * 60);
+        setTimeLeft(INITIAL_TIME);
         setIsRunning(false);
     };
 
@@ -97,7 +99,9 @@ const PomodoroTimer: React.FC = () => {
 
     const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.replace(/[^0-9]/g, '');
-        setEditMinutes(value);
+        if (value === '' || parseInt(value) <= 999) {
+            setEditMinutes(value);
+        }
     };
 
     const handleTimeSubmit = (e: React.FormEvent) => {

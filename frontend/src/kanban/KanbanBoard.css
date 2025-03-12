@@ -1,0 +1,194 @@
+.kanban-board {
+  padding: 24px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: #fafafa;
+}
+
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.board-header h2 {
+  font-weight: 500;
+  color: #333;
+  font-size: 1.5em;
+}
+
+.board-columns {
+  display: flex;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 24px;
+  min-height: 200px;
+}
+
+.column {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  min-width: 300px;
+  padding: 16px;
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.column:hover {
+  border-color: #e0e0e0;
+}
+
+.column.dragging {
+  opacity: 0.9;
+  cursor: grabbing;
+  background: #f8f8f8;
+}
+
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.column-title {
+  font-size: 1em;
+  font-weight: 500;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: #333;
+}
+
+.column-title:hover,
+.column-title:focus {
+  border-color: #eee;
+  background: #fafafa;
+}
+
+.tasks {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.new-task-input-container {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.new-task-input {
+  width: calc(100% - 24px);
+  padding: 8px 12px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  font-size: 0.95em;
+  transition: all 0.2s ease;
+  background-color: #fafafa;
+}
+
+.new-task-input:focus {
+  outline: none;
+  border-color: #666;
+  background-color: #fff;
+}
+
+.new-task-input::placeholder {
+  color: #999;
+  font-size: 0.9em;
+}
+
+.task {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 12px;
+  transition: all 0.2s ease;
+}
+
+.task:hover {
+  border-color: #e0e0e0;
+}
+
+.task-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.task-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  cursor: pointer;
+}
+
+.task-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+.task-description {
+  flex: 1;
+  line-height: 1.4;
+  word-break: break-word;
+  text-align: left;
+  color: #333;
+  font-size: 0.95em;
+}
+
+.task-description.done {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.completed-date {
+  color: #999;
+  font-size: 0.85em;
+  margin-top: 4px;
+}
+
+.add-column-btn {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease;
+}
+
+.add-column-btn:hover {
+  background: #444;
+}
+
+.delete-btn {
+  background: none;
+  color: #ccc;
+  border: none;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.delete-btn:hover {
+  color: #999;
+} 
