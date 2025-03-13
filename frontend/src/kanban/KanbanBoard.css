@@ -1,20 +1,6 @@
 .board-container {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  padding: 20px;
   width: 95%;
   max-width: 1400px;
-}
-
-.board-header {
-  display: flex;
-}
-
-.board-title {
-  font-size: 20px;
-  font-weight: 500;
-  color: #333;
 }
 
 .board-columns {

@@ -190,11 +190,7 @@ const KanbanBoard: React.FC = () => {
   };
 
   return (
-
       <div className="board-container">
-        <div className="board-header">
-          <h1 className="board-title">我的看板</h1>
-        </div>
         <div className="board-columns">
           {columns.map(column => (
             <Column
