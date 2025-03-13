@@ -21,7 +21,14 @@ const Task: React.FC<TaskProps> = ({ task, onStatusChange, onDelete }) => {
             {task.description}
           </span>
         </label>
-        <button onClick={onDelete} className="delete-btn" aria-label="删除任务">
+        <button 
+          onClick={(e) => {
+            e.stopPropagation(); // 防止事件冒泡
+            onDelete();
+          }} 
+          className="task-delete-btn" 
+          aria-label="删除任务"
+        >
           ×
         </button>
       </div>

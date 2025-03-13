@@ -5,6 +5,7 @@ import com.myutils.entity.Task;
 import com.myutils.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,11 +24,11 @@ public class TaskService {
         task.setColumnId(taskDTO.getColumnId());
         
         if (taskDTO.getCompletedDate() != null) {
-            task.setCompletedDate(LocalDate.parse(taskDTO.getCompletedDate()));
+            task.setCompletedDate(taskDTO.getCompletedDate());
         }
 
-        task = taskRepository.save(task);
-        return convertToDTO(task);
+        Task savedTask = taskRepository.save(task);
+        return convertToDTO(savedTask);
     }
 
     public List<TaskDTO> getAllTasks() {
@@ -44,6 +45,24 @@ public class TaskService {
                 .collect(Collectors.toList());
     }
 
+    public TaskDTO updateTask(Long id, TaskDTO taskDTO) {
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Task not found with id: " + id));
+
+        task.setDescription(taskDTO.getDescription());
+        task.setStatus(taskDTO.getStatus());
+        task.setCompletedDate(taskDTO.getCompletedDate());
+        task.setColumnId(taskDTO.getColumnId());
+
+        Task updatedTask = taskRepository.save(task);
+        return convertToDTO(updatedTask);
+    }
+
+    @Transactional
+    public void deleteTask(Long id) {
+        taskRepository.deleteById(id);
+    }
+
     private TaskDTO convertToDTO(Task task) {
         TaskDTO dto = new TaskDTO();
         dto.setId(task.getId());
@@ -52,7 +71,7 @@ public class TaskService {
         dto.setColumnId(task.getColumnId());
         
         if (task.getCompletedDate() != null) {
-            dto.setCompletedDate(task.getCompletedDate().format(DateTimeFormatter.ISO_DATE));
+            dto.setCompletedDate(task.getCompletedDate());
         }
         
         return dto;

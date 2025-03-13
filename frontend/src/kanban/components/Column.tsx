@@ -8,6 +8,7 @@ interface ColumnProps {
   onDragStart: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragEnd: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragOver: (e: React.DragEvent<HTMLDivElement>) => void;
+  onDragLeave: (e: React.DragEvent<HTMLDivElement>) => void;
   onDrop: (e: React.DragEvent<HTMLDivElement>) => void;
   onTitleChange: (newTitle: string) => void;
   onDelete: () => void;
@@ -23,6 +24,7 @@ const Column: React.FC<ColumnProps> = ({
   onDragStart,
   onDragEnd,
   onDragOver,
+  onDragLeave,
   onDrop,
   onTitleChange,
   onDelete,
@@ -38,6 +40,7 @@ const Column: React.FC<ColumnProps> = ({
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
       <div className="col-header">

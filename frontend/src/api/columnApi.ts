@@ -12,6 +12,7 @@ interface ColumnDTO {
 const convertToColumn = (dto: ColumnDTO): Column => ({
     id: dto.id,
     title: dto.title,
+    order: dto.order,
     tasks: []
 });
 
@@ -31,17 +32,11 @@ export const columnApi = {
         return convertToColumn(response.data);
     },
 
-    updateColumn: async (id: string, updates: { title: string }): Promise<void> => {
-        const response = await axios.get<ColumnDTO[]>(`${API_BASE_URL}/columns`);
-        const currentColumn = response.data.find(col => col.id === id);
-        if (!currentColumn) {
-            throw new Error('Column not found');
-        }
-        
+    updateColumn: async (id: string, updates: { title: string; order: number }): Promise<void> => {
         const dto: ColumnDTO = {
             id: id,
             title: updates.title,
-            order: currentColumn.order
+            order: updates.order
         };
         await axios.put(`${API_BASE_URL}/columns/${id}`, dto);
     },

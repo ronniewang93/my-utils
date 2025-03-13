@@ -64,7 +64,16 @@ const KanbanBoard: React.FC = () => {
 
   const updateColumnTitle = async (columnId: string, newTitle: string) => {
     try {
-      await columnApi.updateColumn(columnId, { title: newTitle });
+      const currentColumn = columns.find(col => col.id === columnId);
+      if (!currentColumn) {
+        throw new Error('Column not found');
+      }
+
+      await columnApi.updateColumn(columnId, { 
+        title: newTitle,
+        order: currentColumn.order 
+      });
+
       setColumns(prevColumns => 
         prevColumns.map(column =>
           column.id === columnId ? { ...column, title: newTitle } : column
@@ -91,6 +100,10 @@ const KanbanBoard: React.FC = () => {
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.currentTarget.classList.remove('drag-over');
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>, targetColumnId: string) => {
@@ -159,37 +172,51 @@ const KanbanBoard: React.FC = () => {
     ));
   };
 
-  const handleTaskDelete = (columnId: string, taskId: string) => {
-    setColumns(columns.map(column =>
-      column.id === columnId
-        ? { ...column, tasks: column.tasks.filter(task => task.id !== taskId) }
-        : column
-    ));
+  const handleTaskDelete = async (columnId: string, taskId: string) => {
+    try {
+      // 调用后端 API 删除任务
+      await taskApi.deleteTask(taskId);
+      
+      // 更新前端状态
+      setColumns(columns.map(column =>
+        column.id === columnId
+          ? { ...column, tasks: column.tasks.filter(task => task.id !== taskId) }
+          : column
+      ));
+    } catch (error) {
+      console.error('Failed to delete task:', error);
+      // 可以添加错误提示UI
+    }
   };
 
   return (
-    <div className="kanban-board">
-      <div className="board-columns">
-        {columns.map(column => (
-          <Column
-            key={column.id}
-            col={column}
-            newTaskInput={newTaskInputs[column.id] || ''}
-            onDragStart={(e) => handleDragStart(e, column.id)}
-            onDragEnd={handleDragEnd}
-            onDragOver={handleDragOver}
-            onDrop={(e) => handleDrop(e, column.id)}
-            onTitleChange={(newTitle) => updateColumnTitle(column.id, newTitle)}
-            onDelete={() => deleteColumn(column.id)}
-            onNewTaskInputChange={(value) => handleNewTaskInputChange(column.id, value)}
-            onNewTaskKeyPress={(e) => handleNewTaskKeyPress(e, column.id)}
-            onTaskStatusChange={(taskId, checked) => handleTaskStatusChange(column.id, taskId, checked)}
-            onTaskDelete={(taskId) => handleTaskDelete(column.id, taskId)}
-          />
-        ))}
-        <AddColumnButton onClick={addColumn} />
+
+      <div className="board-container">
+        <div className="board-header">
+          <h1 className="board-title">我的看板</h1>
+        </div>
+        <div className="board-columns">
+          {columns.map(column => (
+            <Column
+              key={column.id}
+              col={column}
+              newTaskInput={newTaskInputs[column.id] || ''}
+              onDragStart={(e) => handleDragStart(e, column.id)}
+              onDragEnd={handleDragEnd}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
+              onDrop={(e) => handleDrop(e, column.id)}
+              onTitleChange={(newTitle) => updateColumnTitle(column.id, newTitle)}
+              onDelete={() => deleteColumn(column.id)}
+              onNewTaskInputChange={(value) => handleNewTaskInputChange(column.id, value)}
+              onNewTaskKeyPress={(e) => handleNewTaskKeyPress(e, column.id)}
+              onTaskStatusChange={(taskId, checked) => handleTaskStatusChange(column.id, taskId, checked)}
+              onTaskDelete={(taskId) => handleTaskDelete(column.id, taskId)}
+            />
+          ))}
+          <AddColumnButton onClick={addColumn} />
+        </div>
       </div>
-    </div>
   );
 };
 

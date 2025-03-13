@@ -1,7 +1,6 @@
 package com.myutils.entity;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "tasks")
@@ -16,10 +15,9 @@ public class Task {
     @Column(nullable = false)
     private String status;
 
-    @Column(name = "completed_date")
-    private LocalDate completedDate;
+    private String completedDate;
 
-    @Column(name = "column_id", nullable = false)
+    @Column(nullable = false)
     private String columnId;
 
     // Getters and Setters
@@ -47,11 +45,11 @@ public class Task {
         this.status = status;
     }
 
-    public LocalDate getCompletedDate() {
+    public String getCompletedDate() {
         return completedDate;
     }
 
-    public void setCompletedDate(LocalDate completedDate) {
+    public void setCompletedDate(String completedDate) {
         this.completedDate = completedDate;
     }
 

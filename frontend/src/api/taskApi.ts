@@ -34,4 +34,12 @@ export const taskApi = {
         const response = await axios.get(`${API_BASE_URL}/tasks/column/${columnId}`);
         return response.data.map(convertToTask);
     },
+    
+    deleteTask: async (taskId: string): Promise<void> => {
+        const numericId = parseInt(taskId, 10);
+        if (isNaN(numericId)) {
+            throw new Error('Invalid task ID: ' + taskId);
+        }
+        await axios.delete(`${API_BASE_URL}/tasks/${numericId}`);
+    },
 }; 

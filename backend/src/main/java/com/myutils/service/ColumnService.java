@@ -16,25 +16,6 @@ public class ColumnService {
     @Autowired
     private ColumnRepository columnRepository;
 
-    @PostConstruct
-    @Transactional
-    public void init() {
-        // 如果没有列，创建默认的列
-        if (columnRepository.count() == 0) {
-            Col todoCol = new Col();
-            todoCol.setId("1");
-            todoCol.setTitle("待办");
-            todoCol.setOrder(0);
-            columnRepository.save(todoCol);
-
-            Col doneCol = new Col();
-            doneCol.setId("2");
-            doneCol.setTitle("已完成");
-            doneCol.setOrder(1);
-            columnRepository.save(doneCol);
-        }
-    }
-
     @Transactional(readOnly = true)
     public List<ColumnDTO> getAllColumns() {
         return columnRepository.findAllByOrderByOrderAsc()
