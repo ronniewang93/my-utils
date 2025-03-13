@@ -1,0 +1,9 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+
+# code-commit-rule
+
+- commit the changes and push the code changes in a single command to save time

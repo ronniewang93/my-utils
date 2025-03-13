@@ -1,7 +1,8 @@
-import React, { useState, KeyboardEvent } from 'react';
+import React, { useState, useEffect, KeyboardEvent } from 'react';
 import { Column as ColumnType, Task, TaskStatus } from './types';
 import Column from './components/Column';
 import AddColumnButton from './components/AddColumnButton';
+import { taskApi } from '../api/taskApi';
 import './KanbanBoard.css';
 
 const KanbanBoard: React.FC = () => {
@@ -12,6 +13,24 @@ const KanbanBoard: React.FC = () => {
 
   const [draggedColumnId, setDraggedColumnId] = useState<string | null>(null);
   const [newTaskInputs, setNewTaskInputs] = useState<{ [key: string]: string }>({});
+
+  useEffect(() => {
+    loadTasks();
+  }, []);
+
+  const loadTasks = async () => {
+    try {
+      const tasks = await taskApi.getAllTasks();
+      setColumns(columns.map(column => ({
+        ...column,
+        tasks: tasks.filter(task => 
+          column.id === '1' ? task.status === 'pending' : task.status === 'done'
+        )
+      })));
+    } catch (error) {
+      console.error('Failed to load tasks:', error);
+    }
+  };
 
   const addColumn = () => {
     const newColumn: ColumnType = {
@@ -79,20 +98,25 @@ const KanbanBoard: React.FC = () => {
     setNewTaskInputs({ ...newTaskInputs, [columnId]: value });
   };
 
-  const handleNewTaskKeyPress = (e: KeyboardEvent<HTMLInputElement>, columnId: string) => {
+  const handleNewTaskKeyPress = async (e: KeyboardEvent<HTMLInputElement>, columnId: string) => {
     if (e.key === 'Enter' && newTaskInputs[columnId].trim()) {
-      const newTask: Task = {
-        id: Date.now().toString(),
-        description: newTaskInputs[columnId].trim(),
-        status: 'pending',
-      };
+      try {
+        const newTask = await taskApi.createTask({
+          description: newTaskInputs[columnId].trim(),
+          status: 'pending',
+          columnId: columnId
+        });
 
-      setColumns(columns.map(column =>
-        column.id === columnId
-          ? { ...column, tasks: [...column.tasks, newTask] }
-          : column
-      ));
-      setNewTaskInputs({ ...newTaskInputs, [columnId]: '' });
+        setColumns(columns.map(column =>
+          column.id === columnId
+            ? { ...column, tasks: [...column.tasks, newTask] }
+            : column
+        ));
+        setNewTaskInputs({ ...newTaskInputs, [columnId]: '' });
+      } catch (error) {
+        console.error('Failed to create task:', error);
+        // 可以添加错误提示UI
+      }
     }
   };
 

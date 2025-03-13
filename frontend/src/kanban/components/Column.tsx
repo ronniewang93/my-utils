@@ -1,5 +1,5 @@
 import React, { KeyboardEvent } from 'react';
-import { Column as ColumnType, Task as TaskType } from '../types';
+import { Column as ColumnType } from '../types';
 import Task from './Task';
 
 interface ColumnProps {
