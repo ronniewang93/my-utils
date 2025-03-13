@@ -5,6 +5,7 @@ export interface Task {
   description: string;
   status: TaskStatus;
   completedDate?: string;
+  columnId: string;
 }
 
 export interface Column {

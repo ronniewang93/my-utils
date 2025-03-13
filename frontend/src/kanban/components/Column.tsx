@@ -3,7 +3,7 @@ import { Column as ColumnType } from '../types';
 import Task from './Task';
 
 interface ColumnProps {
-  column: ColumnType;
+  col: ColumnType;
   newTaskInput: string;
   onDragStart: (e: React.DragEvent<HTMLDivElement>) => void;
   onDragEnd: (e: React.DragEvent<HTMLDivElement>) => void;
@@ -18,7 +18,7 @@ interface ColumnProps {
 }
 
 const Column: React.FC<ColumnProps> = ({
-  column,
+  col,
   newTaskInput,
   onDragStart,
   onDragEnd,
@@ -33,19 +33,19 @@ const Column: React.FC<ColumnProps> = ({
 }) => {
   return (
     <div
-      className="column"
+      className="col"
       draggable="true"
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       onDragOver={onDragOver}
       onDrop={onDrop}
     >
-      <div className="column-header">
+      <div className="col-header">
         <input
           type="text"
-          value={column.title}
+          value={col.title}
           onChange={(e) => onTitleChange(e.target.value)}
-          className="column-title"
+          className="col-title"
         />
         <button onClick={onDelete} className="delete-btn" aria-label="删除列">
           ×
@@ -62,7 +62,7 @@ const Column: React.FC<ColumnProps> = ({
             className="new-task-input"
           />
         </div>
-        {column.tasks
+        {col.tasks
           .sort((a, b) => {
             if (a.status !== b.status) {
               return a.status === 'pending' ? -1 : 1;

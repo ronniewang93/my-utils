@@ -6,7 +6,7 @@ interface AddColumnButtonProps {
 
 const AddColumnButton: React.FC<AddColumnButtonProps> = ({ onClick }) => {
   return (
-    <button onClick={onClick} className="add-column-btn" aria-label="添加新列">
+    <button onClick={onClick} className="add-col-btn" aria-label="添加新列">
       +
     </button>
   );

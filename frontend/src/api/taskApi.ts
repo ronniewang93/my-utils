@@ -11,34 +11,27 @@ export interface TaskDTO {
     columnId: string;
 }
 
+const convertToTask = (taskDTO: TaskDTO): Task => ({
+    id: taskDTO.id!.toString(),
+    description: taskDTO.description,
+    status: taskDTO.status as Task['status'],
+    completedDate: taskDTO.completedDate,
+    columnId: taskDTO.columnId,
+});
+
 export const taskApi = {
     getAllTasks: async (): Promise<Task[]> => {
         const response = await axios.get(`${API_BASE_URL}/tasks`);
-        return response.data.map((task: TaskDTO) => ({
-            id: task.id!.toString(),
-            description: task.description,
-            status: task.status,
-            completedDate: task.completedDate,
-        }));
+        return response.data.map(convertToTask);
     },
 
     createTask: async (task: TaskDTO): Promise<Task> => {
         const response = await axios.post(`${API_BASE_URL}/tasks`, task);
-        return {
-            id: response.data.id.toString(),
-            description: response.data.description,
-            status: response.data.status,
-            completedDate: response.data.completedDate,
-        };
+        return convertToTask(response.data);
     },
 
     getTasksByColumnId: async (columnId: string): Promise<Task[]> => {
         const response = await axios.get(`${API_BASE_URL}/tasks/column/${columnId}`);
-        return response.data.map((task: TaskDTO) => ({
-            id: task.id!.toString(),
-            description: task.description,
-            status: task.status,
-            completedDate: task.completedDate,
-        }));
+        return response.data.map(convertToTask);
     },
 }; 

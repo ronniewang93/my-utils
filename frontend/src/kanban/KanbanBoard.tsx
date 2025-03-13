@@ -3,56 +3,76 @@ import { Column as ColumnType, Task, TaskStatus } from './types';
 import Column from './components/Column';
 import AddColumnButton from './components/AddColumnButton';
 import { taskApi } from '../api/taskApi';
+import { columnApi } from '../api/columnApi';
 import './KanbanBoard.css';
 
 const KanbanBoard: React.FC = () => {
-  const [columns, setColumns] = useState<ColumnType[]>([
-    { id: '1', title: '待办', tasks: [] },
-    { id: '2', title: '已完成', tasks: [] },
-  ]);
-
+  const [columns, setColumns] = useState<ColumnType[]>([]);
   const [draggedColumnId, setDraggedColumnId] = useState<string | null>(null);
   const [newTaskInputs, setNewTaskInputs] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    loadTasks();
+    loadColumnsAndTasks();
   }, []);
 
-  const loadTasks = async () => {
+  const loadColumnsAndTasks = async () => {
     try {
-      const tasks = await taskApi.getAllTasks();
-      setColumns(columns.map(column => ({
+      const [columnsData, tasksData] = await Promise.all([
+        columnApi.getAllColumns(),
+        taskApi.getAllTasks()
+      ]);
+
+      const columnsWithTasks = columnsData.map((column: ColumnType) => ({
         ...column,
-        tasks: tasks.filter(task => 
-          column.id === '1' ? task.status === 'pending' : task.status === 'done'
-        )
-      })));
+        tasks: tasksData.filter((task: Task) => task.columnId === column.id)
+      }));
+
+      setColumns(columnsWithTasks);
     } catch (error) {
-      console.error('Failed to load tasks:', error);
+      console.error('Failed to load data:', error);
     }
   };
 
-  const addColumn = () => {
-    const newColumn: ColumnType = {
-      id: Date.now().toString(),
-      title: '新列',
-      tasks: [],
-    };
-    setColumns([...columns, newColumn]);
-    setNewTaskInputs({ ...newTaskInputs, [newColumn.id]: '' });
+  const addColumn = async () => {
+    try {
+      const newColumn = await columnApi.createColumn({
+        id: Date.now().toString(),
+        title: '新列',
+        order: columns.length
+      });
+
+      setColumns(prevColumns => [...prevColumns, { ...newColumn, tasks: [] }]);
+      setNewTaskInputs(prev => ({ ...prev, [newColumn.id]: '' }));
+    } catch (error) {
+      console.error('Failed to create column:', error);
+    }
   };
 
-  const deleteColumn = (columnId: string) => {
-    setColumns(columns.filter(column => column.id !== columnId));
-    const updatedInputs = { ...newTaskInputs };
-    delete updatedInputs[columnId];
-    setNewTaskInputs(updatedInputs);
+  const deleteColumn = async (columnId: string) => {
+    try {
+      await columnApi.deleteColumn(columnId);
+      setColumns(prevColumns => prevColumns.filter(column => column.id !== columnId));
+      setNewTaskInputs(prev => {
+        const updated = { ...prev };
+        delete updated[columnId];
+        return updated;
+      });
+    } catch (error) {
+      console.error('Failed to delete column:', error);
+    }
   };
 
-  const updateColumnTitle = (columnId: string, newTitle: string) => {
-    setColumns(columns.map(column =>
-      column.id === columnId ? { ...column, title: newTitle } : column
-    ));
+  const updateColumnTitle = async (columnId: string, newTitle: string) => {
+    try {
+      await columnApi.updateColumn(columnId, { title: newTitle });
+      setColumns(prevColumns => 
+        prevColumns.map(column =>
+          column.id === columnId ? { ...column, title: newTitle } : column
+        )
+      );
+    } catch (error) {
+      console.error('Failed to update column title:', error);
+    }
   };
 
   const handleDragStart = (e: React.DragEvent<HTMLDivElement>, columnId: string) => {
@@ -153,7 +173,7 @@ const KanbanBoard: React.FC = () => {
         {columns.map(column => (
           <Column
             key={column.id}
-            column={column}
+            col={column}
             newTaskInput={newTaskInputs[column.id] || ''}
             onDragStart={(e) => handleDragStart(e, column.id)}
             onDragEnd={handleDragEnd}
