@@ -26,11 +26,9 @@ const Task: React.FC<TaskProps> = ({ task, onStatusChange, onDelete }) => {
             e.stopPropagation(); // 防止事件冒泡
             onDelete();
           }} 
-          className="task-delete-btn" 
+          className="delete-btn" 
           aria-label="删除任务"
-        >
-          ×
-        </button>
+        >x</button>
       </div>
       {task.status === 'done' && task.completedDate && (
         <div className="completed-date">
